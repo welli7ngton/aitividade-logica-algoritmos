@@ -3,14 +3,14 @@ Enunciado: Você e sua equipe de programadores foram contratados por pequena emp
 gerenciamento de livros. Este software deve ter o seguinte menu e opções:
     - Cadastrar Livro
     - Consultar Livro
-    - Consultar Todos 
+    - Consultar Todos
     - Consultar por Id
     - Consultar por Autor
     - Retornar ao menu
     - Remover Livro
     - Encerrar Programa
 
-Elabore um programa em Python que: 
+Elabore um programa em Python que:
 Deve-se implementar o print com uma mensagem de boas-vindas que apareça o seu nome [EXIGÊNCIA DE CÓDIGO 1 de 8];
 
 Deve-se implementar uma lista vazia com o nome de lista_livro e a variável id_global com valor inicial igual
@@ -57,8 +57,6 @@ Autor / 4. Retornar ao menu):
     Deve-se apresentar na saída de console uma remoção de um dos livros seguida de uma consulta de todos os livros [EXIGÊNCIA DE SAÍDA DE CONSOLE 6 de 6];
 """
 
-ID_GLOBAL = 0
-
 
 class Livro:
     def __init__(self, nome, autor, editora, _id):
@@ -67,16 +65,32 @@ class Livro:
         self.editora = editora
         self._id = _id
 
+    def show_dados(self):
+        print(f"""
+            nome: {self.nome}
+            autor: {self.autor}
+            editora: {self.editora}
+            id: {self._id}
+        """)
+
+
 class DBLivros:
     def __init__(self):
         self.livros = []
-    
+
     def cadastrar_livro(self, id_global):
-        nome = input("")
-    
-    def consultar_livro(self, id_global):
-        pass
-    
+        nome = input("Digite o nome: ")
+        autor = input("Digite o autor: ")
+        editora = input("Digite a editora: ")
+        self.livros.append(Livro(nome, autor, editora, id_global))
+
+    def consultar_livro(self, id_livro):
+        for livro in self.livros:
+            if livro._id == id_livro:
+                livro.show_dados()
+                return
+        print("Livro não encontrado.")
+
     def remover_livro(self, id_global):
         pass
 
@@ -92,14 +106,34 @@ def show_principal_menu():
 
 
 def main():
+    # Definição do id no escopo global
+    global ID_GLOBAL
+    # Atribuição do valor inicial da variavel global
+    ID_GLOBAL = 0
+
     db = DBLivros()
     print("Bem-vindo a Livraria do Wellington Almeida")
     show_principal_menu()
     opcao = int(input())
-    
+
     if opcao == 1:
-        db.cadastrar_livros(ID_GLOBAL + 1)
+        # Incremento de id global antes de atribuir a um livro
+        ID_GLOBAL += 1
+        db.cadastrar_livros(ID_GLOBAL)
 
 
 if __name__ == '__main__':
-    main()
+    global ID_GLOBAL
+
+    ID_GLOBAL = 0
+    # main()
+    db = DBLivros()
+
+    db.cadastrar_livro(ID_GLOBAL)
+    ID_GLOBAL += 1
+    db.cadastrar_livro(ID_GLOBAL)
+    ID_GLOBAL += 1
+    db.cadastrar_livro(ID_GLOBAL)
+
+    for _ in db.livros:
+        _.show_dados()
