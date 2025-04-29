@@ -75,11 +75,17 @@ Elabore um programa em Python que:
     K. Deve-se apresentar na saída de console um pedido com opção de serviço, número
     de páginas e serviço extra válidos [EXIGÊNCIA DE SAÍDA DE CONSOLE 4 de 4];
 """
+MENU = """
+    DIG: Digitalição
+    ICO: Impressão Colorida
+    IPB: Impressão Preto e Branco
+    FOT: Fotocópia
+"""
 
 ADICIONAL = """
-1 - Encadernaçao simples: R$ 14.00
-2 - Encadernaçao Capa Dura: R$ 40.00
-0 - Não desejo mais nada
+    1 - Encadernaçao simples: R$ 14.00
+    2 - Encadernaçao Capa Dura: R$ 40.00
+    0 - Não desejo mais nada
 """
 
 # mapping para facilitar a relação entre tipo de serviço (string) e valor de serviço (float)
@@ -128,12 +134,7 @@ def main():
     print("Bem-vindo a Copiadora de Wellington Almeida")
 
     while True:
-        print("""
-            DIG: Digitalição
-            ICO: Impressão Colorida
-            IPB: Impressão Preto e Branco
-            FOT: Fotocópia
-        """)
+        print(MENU)
         servico = input("Entre com o tipo de serviço desejado: ").upper()
         if servico not in ['DIG', 'ICO', 'IPB', 'FOT']:
             print("Escolha inválida entre com o tipo de serviço novamente.")
