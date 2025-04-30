@@ -75,13 +75,15 @@ Elabore um programa em Python que:
     K. Deve-se apresentar na saída de console um pedido com opção de serviço, número
     de páginas e serviço extra válidos [EXIGÊNCIA DE SAÍDA DE CONSOLE 4 de 4];
 """
+
+# contante para o menu
 MENU = """
     DIG: Digitalição
     ICO: Impressão Colorida
     IPB: Impressão Preto e Branco
     FOT: Fotocópia
 """
-
+# contante para o menu de adicionais
 ADICIONAL = """
     1 - Encadernaçao simples: R$ 14.00
     2 - Encadernaçao Capa Dura: R$ 40.00
@@ -97,10 +99,12 @@ servico_map = {
 }
 
 
+# função auxiliar para obter desconto
 def obtem_desconto(num_paginas, valor_servico_escolhido):
+    # calculo do valor total
     total = num_paginas * valor_servico_escolhido
 
-    # função auxiliar para realizar o cálculo do valor de desconto por página
+    # verificações dos casos de desconto
     if 20 <= num_paginas < 200:
         return total - (0.15 * total)
     elif 200 <= num_paginas < 2000:
@@ -114,9 +118,12 @@ def obtem_desconto(num_paginas, valor_servico_escolhido):
         return total
 
 
+# função requisitada pela questao, para escolha de serviço
 def escolha_servico(servico):
     while True:
+        # verificação se o serviço que o usuário escolheu é válido
         if servico in ['DIG', 'ICO', 'IPB', 'FOT']:
+            # uso do 'try' para capturar alguma exception no processo de escolher serviços
             try:
                 num_paginas = int(input("Entre com o número de páginas: "))
                 valor_servico_escolhido = servico_map[servico]
@@ -135,14 +142,17 @@ def main():
 
     while True:
         print(MENU)
+        # obtendo dados do usuário
         servico = input("Entre com o tipo de serviço desejado: ").upper()
+        # verificação se seviço é válido
         if servico not in ['DIG', 'ICO', 'IPB', 'FOT']:
             print("Escolha inválida entre com o tipo de serviço novamente.")
             continue
         else:
+            # retorno dos valores calculados pela função escolha_servico
             total_servico, valor_servico_escolhido, num_paginas = escolha_servico(servico)
             print(ADICIONAL)
-
+            # verificacao de servico extra
             servico_extra = int(input("Deseja adicionar mais um serviço? "))
             if servico_extra == 1:
                 extra = 14
@@ -151,7 +161,7 @@ def main():
             else:
                 extra = 0
             total = (total_servico) + extra
-
+            # saída final
             print(f'Total: R$ {total:.2f} (serviço: {valor_servico_escolhido:.2f} * páginas: {num_paginas:.2f} + extra: {extra:.2f})')
             break
 

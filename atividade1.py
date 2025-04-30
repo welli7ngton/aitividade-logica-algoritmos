@@ -35,6 +35,7 @@ a 2500) [EXIGÊNCIA DE SAÍDA DE CONSOLE 2 de 2];
 """
 
 
+# função auxiliar para gerenciar o desconto
 def obtem_desconto(valor):
     if valor in range(0, 2499):
         return 0
@@ -51,21 +52,22 @@ def obtem_desconto(valor):
 
 def main():
     print("Bem-vindo a loja de Wellington Almeida")
-
+    # obter dados do usuário
     valor_produto = int(input("Digite o Valor do produto: "))
     qtd_produto = int(input("Digite a quantidade do produto: "))
-
+    # cálculo do valor toral
     valor_total = valor_produto * qtd_produto
     desconto = obtem_desconto(valor_total)
-
+    # print auxiliar para mostrar o desconto obtido
     print(f"Desconto aplicavel: {int(desconto * 100)}%")
-
-    print(f"Valor SEM desconto: {valor_total:.2f}")
-
+    # cálculo do valor com desconto
     valor_com_desconto = valor_total - (valor_total * desconto)
 
+    # saída dos valores na tela
+    print(f"Valor SEM desconto: {valor_total:.2f}")
     print(f"Valor COM desconto: {valor_com_desconto:.2f}")
 
 
 if __name__ == '__main__':
+    # função principal
     main()

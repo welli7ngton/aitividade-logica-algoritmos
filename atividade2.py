@@ -41,6 +41,7 @@ Elabore um programa em Python que:
     diferentes [EXIGÊNCIA DE SAÍDA DE CONSOLE 4 de 4];
 """
 
+# constante para armazenar o cardápio
 CARDAPIO = f"""
     {'-' * 14} Cardápio {'-' * 13}
     {'-' * 37}
@@ -55,21 +56,23 @@ CARDAPIO = f"""
 def main():
     print("Bem-vindo à loja de Wellington Almeida")
     print(CARDAPIO)
+    # variavel para armazenar o valor total do pedido
     total = 0
 
     while True:
+        # obtendo dados do usuário
         sabor = input("Digite o sabor desejado (CP/AC): ").upper()
-
+        # verificando se o usuário digitou um valor válido
         if sabor not in ["CP", "AC"]:
             print("Sabor inválido. Tente novamente.")
             continue
-
+        # obtendo tamanho desejado
         tamanho = input("Digite o tamanho desejado (P/M/G): ").upper()
-
+        # verificando se o tamanho desejado é válido
         if tamanho not in ['P', 'M', 'G']:
             print("Tamanho inválido. Tente novamente.")
             continue
-
+        # definição de preços caso o usuário tenha pedido cupuaçu
         if sabor == "CP":
             _sabor_aux = 'Cupuaçu'
             if tamanho == "P":
@@ -78,6 +81,7 @@ def main():
                 preco = 14
             else:
                 preco = 18
+        # definição de preços caso o usuário tenha pedido açaí
         elif sabor == "AC":
             _sabor_aux = 'Açaí'
             if tamanho == "P":
@@ -86,11 +90,13 @@ def main():
                 preco = 16
             else:
                 preco = 20
+        # saída do valor inicial
         print(f"Você pediu {_sabor_aux} no tamanho {tamanho}: R$ {preco:.2f}")
+        # cálculo do valor final
         total += preco
-
+        # verificação de adição de mais itens
         mais = input("\nDeseja mais alguma coisa? (S/N): ").upper()
-
+        # verificando a resposta do usuário
         if mais == "S":
             continue
         elif mais == "N":
@@ -98,7 +104,7 @@ def main():
         else:
             print("Resposta inválida, encerrando o pedido.")
             break
-
+    # saída final do programa
     print(f"\nValor total a ser pago: R$ {total:.2f}")
 
 
