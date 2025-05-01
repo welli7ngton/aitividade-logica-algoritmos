@@ -57,83 +57,137 @@ Autor / 4. Retornar ao menu):
     Deve-se apresentar na saída de console uma remoção de um dos livros seguida de uma consulta de todos os livros [EXIGÊNCIA DE SAÍDA DE CONSOLE 6 de 6];
 """
 
+# variavel para armazenar o menu principal
+MENU = f"""
+    {'-' * 26}
+    {'-' * 5} Menu Principal {'-' * 5}
+    1 - Cadastrar Livro
+    2 - Consultar Livro
+    3 - Remover Livro
+    4 - Encerrar Programa
+"""
 
-class Livro:
-    def __init__(self, nome, autor, editora, _id):
-        self.nome = nome
-        self.autor = autor
-        self.editora = editora
-        self._id = _id
-
-    def show_dados(self):
-        print(f"""
-            nome: {self.nome}
-            autor: {self.autor}
-            editora: {self.editora}
-            id: {self._id}
-        """)
+# variavel definida no escopo global com ajuda da keyword
+global ID_GLOBAL
 
 
-class DBLivros:
+# classe responsável por gerenciar os livros
+class Livraria:
     def __init__(self):
-        self.livros = []
+        self.lista_livro = []  # lista de dicionários para armazenar livros
 
-    def cadastrar_livro(self, id_global):
-        nome = input("Digite o nome: ")
-        autor = input("Digite o autor: ")
-        editora = input("Digite a editora: ")
-        self.livros.append(Livro(nome, autor, editora, id_global))
+    # função para cadastrar um livro
+    def cadastrar_livro(self, id):
+        print('-' * 32)
+        print(f"{'-' * 5} MENU CADASTRAR LIVRO {'-' * 5}")
+        print(f"Id do livro: {id}")
+        nome = input("Por favor entre com o nome do livro: ")
+        autor = input("Por favor entre com o autor do livro: ")
+        editora = input("Por favor entre com a editora do livro: ")
 
-    def consultar_livro(self, id_livro):
-        for livro in self.livros:
-            if livro._id == id_livro:
-                livro.show_dados()
-                return
-        print("Livro não encontrado.")
+        livro = {
+            "id": id,
+            "nome": nome,
+            "autor": autor,
+            "editora": editora
+        }
+        self.lista_livro.append(livro)
+        print('-' * 32)
 
-    def remover_livro(self, id_global):
-        pass
+    # função para consultar livros
+    def consultar_livro(self):
+        while True:
+            print('-' * 32)
+            print(f"{'-' * 5} MENU CADASTRAR LIVRO {'-' * 5}")
+            print("1 - Consultar Todos os Livros")
+            print("2 - Consultar Livro por Id")
+            print("3 - Consultar Livro(s) por Autor")
+            print("4 - Retornar")
+            opcao = input("Escolha uma opção: ")
 
+            if opcao == "1":
+                print(f"{'-' * 5} Livros Cadastrados {'-' * 5}")
+                for livro in self.lista_livro:
+                    print('\n')
+                    print(f'id: {livro["id"]}')
+                    print(f'nome: {livro["nome"]}')
+                    print(f'autor: {livro["autor"]}')
+                    print(f'editora: {livro["editora"]}')
+            elif opcao == "2":
+                try:
+                    id_busca = int(input("Digite o ID do livro: "))
+                    encontrado = False
+                    for livro in self.lista_livro:
+                        if livro["id"] == id_busca:
+                            print('\n')
+                            print(f'id: {livro["id"]}')
+                            print(f'nome: {livro["nome"]}')
+                            print(f'autor: {livro["autor"]}')
+                            print(f'editora: {livro["editora"]}')
+                            encontrado = True
+                            break
+                    if not encontrado:
+                        print("Livro não encontrado.")
+                except ValueError:
+                    print("ID inválido.")
+            elif opcao == "3":
+                autor_busca = input("Digite o nome do autor: ")
+                # cria uma lista com list comprehension para os livros encontrados
+                encontrados = [livro for livro in self.lista_livro if livro["autor"].lower() == autor_busca.lower()]
+                if encontrados:
+                    for livro in encontrados:
+                        print('\n')
+                        print(f'id: {livro["id"]}')
+                        print(f'nome: {livro["nome"]}')
+                        print(f'autor: {livro["autor"]}')
+                        print(f'editora: {livro["editora"]}')
+                else:
+                    print("Nenhum livro encontrado para este autor.")
+            elif opcao == "4":
+                break
+            else:
+                print("Opção inválida.")
 
-def show_principal_menu():
-    print('-' * 40)
-    print('-' * 11, ' Menu Principal ', '-' * 11)
-    print("Escolha a opção desejada: ")
-    print("1 - Cadastrar Livro")
-    print("2 - Consultar Livros")
-    print("3 - Remover Livro")
-    print("4 - Sair")
+    # função para remover livro
+    def remover_livro(self):
+        while True:
+            # uso do try/except para capturar os erros
+            try:
+                id_remover = int(input("Digite o ID do livro a remover: "))
+                # para cada livro na lista de livros, ha uma verificação se o id é igual ao que deve ser removido
+                for livro in self.lista_livro:
+                    if livro["id"] == id_remover:
+                        self.lista_livro.remove(livro)
+                        print(f"Livro ID {id_remover} removido com sucesso!")
+                        return
+                print("Id inválido.")
+            except ValueError:
+                print("ID inválido, tente novamente.")
 
 
 def main():
-    # Definição do id no escopo global
-    global ID_GLOBAL
-    # Atribuição do valor inicial da variavel global
+    livraria = Livraria()
     ID_GLOBAL = 0
 
-    db = DBLivros()
     print("Bem-vindo a Livraria do Wellington Almeida")
-    show_principal_menu()
-    opcao = int(input())
+    while True:
+        print(MENU)
 
-    if opcao == 1:
-        # Incremento de id global antes de atribuir a um livro
-        ID_GLOBAL += 1
-        db.cadastrar_livros(ID_GLOBAL)
+        opcao = input("Escolha a opção desejada: ")
+        # validação das opções do usuário
+        if opcao == "1":
+            ID_GLOBAL += 1
+            livraria.cadastrar_livro(ID_GLOBAL)
+        elif opcao == "2":
+            livraria.consultar_livro()
+        elif opcao == "3":
+            livraria.remover_livro()
+        elif opcao == "4":
+            print("Encerrando o programa. Até logo!")
+            break
+        else:
+            print("Opção inválida.")
 
 
 if __name__ == '__main__':
-    global ID_GLOBAL
-
-    ID_GLOBAL = 0
-    # main()
-    db = DBLivros()
-
-    db.cadastrar_livro(ID_GLOBAL)
-    ID_GLOBAL += 1
-    db.cadastrar_livro(ID_GLOBAL)
-    ID_GLOBAL += 1
-    db.cadastrar_livro(ID_GLOBAL)
-
-    for _ in db.livros:
-        _.show_dados()
+    main()
